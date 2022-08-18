@@ -431,6 +431,12 @@ static int tree_qsort_cmp(const void *v1, const void *v2)
 struct tree *t1 = *(struct tree **)v1;
 struct tree *t2 = *(struct tree **)v2;
 
+if (!GLOBALS->sort_signals) {
+  if ((t1->t_which > 0) && (t2->t_which > 0)) {
+    return t2->t_which - t1->t_which;
+  }
+}
+
 return(sigcmp(t2->name, t1->name));	/* because list must be in rvs */
 }
 
@@ -968,7 +974,7 @@ gtk_widget_show(GLOBALS->treeview_main);
 }
 
 
-/* 
+/*
  * SST Exclusion filtering for XXX_maketree2() above
  */
 #define SST_EXCL_MESS "SSTEXCL | "
@@ -1002,7 +1008,7 @@ if(GLOBALS->sst_exclude_filename)
 		perror("Why");
 		return;
 		}
-	
+
 	fprintf(stderr, SST_EXCL_MESS"Processing '%s'.\n", GLOBALS->sst_exclude_filename);
 
 	while(!feof(f))
@@ -1035,7 +1041,7 @@ if(GLOBALS->sst_exclude_filename)
 					else if(!strcmp(p, "[compname]")) { exclmode = SST_EXCL_COMP; }
 					else if(!strcmp(p, "[instname]")) { exclmode = SST_EXCL_INST; }
 					else                              { exclmode = SST_EXCL_NONE; }
-					break;					
+					break;
 
 				default:
 					switch(exclmode)
@@ -1092,7 +1098,7 @@ if(GLOBALS->sst_exclude_filename)
 						default:	break;
 						}
 					break;
-				}			
+				}
 
 			free_2(iline);
 			}

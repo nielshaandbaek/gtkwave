@@ -1607,16 +1607,16 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Full Prec On.\n");
 	                }
-	
+
 		calczoom(GLOBALS->tims.zoom);
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			fix_wavehadj();
-	
+
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "changed"); /* force zoom update */
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "value_changed"); /* force zoom update */
-	
+
 			update_maxmarker_labels();
 			}
 		}
@@ -1735,12 +1735,12 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Pow10 Snap On.\n");
 	                }
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			calczoom(GLOBALS->tims.zoom);
 			fix_wavehadj();
-	
+
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "changed"); /* force zoom update */
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "value_changed"); /* force zoom update */
 			}
@@ -1995,7 +1995,7 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Resizing disabled.\n");
 	                }
-	
+
 	        if(GLOBALS->signalarea && GLOBALS->wavearea)
 	                {
 			for(i=0;i<2;i++)
@@ -3233,7 +3233,7 @@ bvptr combine_traces(int direction, Trptr single_trace_only)
 								else
 								{
 								t_botname = vname;
-								}	
+								}
 							}
 						}
 						else
@@ -3828,7 +3828,7 @@ menu_new_viewer_tab_cleanup_2(char *fname, int optimize_vcd)
 
 		if(g_old->loaded_file_type == MISSING_FILE) /* remove original "blank" page */
 			{
-                        if(g_old->missing_file_toolbar) 
+                        if(g_old->missing_file_toolbar)
 				{
 #ifndef WAVE_ALLOW_GTK3_HEADER_BAR
 				gtk_widget_set_sensitive(g_old->missing_file_toolbar, TRUE);
@@ -4756,7 +4756,7 @@ if(gw)
         GtkAllocation allocation;
         gtk_widget_get_allocation(GLOBALS->mainwindow, &allocation);
 
-	pb = gdk_pixbuf_get_from_window (gw, 0, 0, allocation.width, allocation.height); 
+	pb = gdk_pixbuf_get_from_window (gw, 0, 0, allocation.width, allocation.height);
 
 	if(pb)
 		{
@@ -6632,7 +6632,7 @@ if(GLOBALS->helpbox_is_active)
         help_text_bold("\n\nData Format-Time");
         help_text(
                 " will step through all highlighted traces and ensure that"
-                " bits and vectors with this qualifier will display as time values." 
+                " bits and vectors with this qualifier will display as time values."
         );
         return;
         }
@@ -6652,7 +6652,7 @@ if(GLOBALS->helpbox_is_active)
         help_text_bold("\n\nData Format-Enum");
         help_text(
                 " will step through all highlighted traces and ensure that"
-                " bits and vectors with this qualifier will display as enum values, provided such values were dumped into file." 
+                " bits and vectors with this qualifier will display as enum values, provided such values were dumped into file."
         );
         return;
         }
@@ -7489,6 +7489,38 @@ if(GLOBALS->helpbox_is_active)
 
 }
 
+void menu_sort_signals(gpointer null_data, guint callback_action, GtkWidget *widget)
+{
+(void)null_data;
+(void)callback_action;
+(void)widget;
+
+if(GLOBALS->helpbox_is_active)
+        {
+        help_text_bold("\n\nSort Signals Alphabetically");
+        help_text(
+		" enables sorting of signals in the signal list alphabetically "
+		" versus in the order the signals were defined in the file."
+        );
+        }
+	else
+	{
+	if(GLOBALS->tcl_menu_toggle_item)
+                {
+                GLOBALS->tcl_menu_toggle_item = FALSE; /* to avoid retriggers */
+                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_SORTSIGS]), GLOBALS->sort_signals = GLOBALS->wave_script_args ? (atoi_64(GLOBALS->wave_script_args->payload) ? TRUE : FALSE) : (!GLOBALS->sort_signals));
+                }
+	else
+		{
+		GLOBALS->sort_signals = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_SORTSIGS]));
+		GLOBALS->signalwindow_width_dirty=1;
+		redraw_signals_and_waves();
+		DEBUG(printf("Sort Signals\n"));
+		}
+	}
+
+}
+
 /**/
 void menu_fullscreen(gpointer null_data, guint callback_action, GtkWidget *widget)
 {
@@ -7533,7 +7565,7 @@ if(GLOBALS->helpbox_is_active)
 #endif
 			gtk_window_unfullscreen (GTK_WINDOW(GLOBALS->mainwindow));
 			}
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)),"changed");
@@ -7588,7 +7620,7 @@ if(GLOBALS->helpbox_is_active)
 			{
 			if(GLOBALS->top_table) gtk_widget_hide(GLOBALS->top_table);
 			}
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)),"changed");
@@ -8065,6 +8097,7 @@ static gtkwave_mlist_t menu_items[] =
     WAVE_GTKIFE("/View/Mouseover Copies To Clipboard", NULL, menu_clipboard_mouseover, WV_MENU_VSMC, "<ToggleItem>"),
     WAVE_GTKIFE("/View/<separator>", NULL, NULL, WV_MENU_SEP9A, "<Separator>"),
     WAVE_GTKIFE("/View/Show Base Symbols", "<Alt>F1", menu_show_base, WV_MENU_VSBS, "<ToggleItem>"),
+    WAVE_GTKIFE("/View/Sort Signals", NULL, menu_sort_signals, WV_MENU_SORTSIGS, "<ToggleItem>"),
     WAVE_GTKIFE("/View/<separator>", NULL, NULL, WV_MENU_SEP10, "<Separator>"),
       /* 110 */
     WAVE_GTKIFE("/View/Standard Trace Select", NULL, menu_enable_standard_trace_select, WV_MENU_ESTS, "<ToggleItem>"),
@@ -8173,6 +8206,7 @@ gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_VSMO]), !G
 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_VSMC]), GLOBALS->clipboard_mouseover);
 
 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_VSBS]), GLOBALS->show_base);
+gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_SORTSIGS]), GLOBALS->sort_signals);
 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_VDR]), GLOBALS->do_resize_signals);
 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_ESTS]), GLOBALS->use_standard_trace_select);
 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu_wlist[WV_MENU_VCMU]), GLOBALS->constant_marker_update);
@@ -8937,7 +8971,7 @@ GtkWidget *mw;
 
 menu_wlist = calloc(nmenu_items, sizeof(GtkWidget *)); /* calloc, not calloc_2() */
 
-menubar = alt_menu(mi, nmenu_items, menu_wlist, global_accel, 
+menubar = alt_menu(mi, nmenu_items, menu_wlist, global_accel,
 #ifdef WAVE_ALLOW_GTK3_HEADER_BAR
 	FALSE
 #else

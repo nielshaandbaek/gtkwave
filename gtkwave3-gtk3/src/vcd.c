@@ -2328,7 +2328,7 @@ while(v)
 				{
 				sprintf(str+slen-1,"[%d:%d]",v->msi,v->lsi);
 				/* 2d add */
-                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))   
+                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))
                                         {
                                         if((v->vartype!=V_EVENT)&&(v->vartype!=V_PARAMETER))
                                                 {
@@ -2494,7 +2494,11 @@ for(i=0;i<GLOBALS->numfacs;i++)
 GLOBALS->firstnode=GLOBALS->curnode=NULL;
 
 /* quicksort(facs,0,numfacs-1); */	/* quicksort deprecated because it degenerates on sorted traces..badly.  very badly. */
-wave_heapsort(GLOBALS->facs,GLOBALS->numfacs);
+
+// Only sort when requested
+if (GLOBALS->sort_signals) {
+  wave_heapsort(GLOBALS->facs,GLOBALS->numfacs);
+}
 
 #ifdef WAVE_HIERFIX
 for(i=0;i<GLOBALS->numfacs;i++)
@@ -2745,4 +2749,3 @@ return(GLOBALS->max_time);
 }
 
 /*******************************************************************************/
-

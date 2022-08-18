@@ -1319,6 +1319,8 @@ FALSE, /*save_on_exit */
 1, /* do_zoom_center 660 */
 0, /* do_initial_zoom_fit 661 */
 0, /* do_initial_zoom_fit_used */
+
+0, // sort_signals
 };
 
 
@@ -1863,6 +1865,7 @@ void reload_into_new_context_2(void)
  new_globals->ps_maxveclen = GLOBALS->ps_maxveclen;
  new_globals->vector_padding = GLOBALS->vector_padding;
  new_globals->zoombase = GLOBALS->zoombase;
+ new_globals->sort_signals = GLOBALS->sort_signals;
 
  new_globals->disable_ae2_alias = GLOBALS->disable_ae2_alias;
  new_globals->hier_ignore_escapes = GLOBALS->hier_ignore_escapes;
@@ -2924,8 +2927,8 @@ if(line)
 if(GLOBALS != g)
 	{
 	/* fix problem where ungrab doesn't occur if button pressed + simultaneous context swap occurs */
- 	if(GLOBALS && GLOBALS->in_button_press_wavewindow_c_1) 
-		{ 
+ 	if(GLOBALS && GLOBALS->in_button_press_wavewindow_c_1)
+		{
 	        XXX_gdk_pointer_ungrab(GDK_CURRENT_TIME);
 		}
 

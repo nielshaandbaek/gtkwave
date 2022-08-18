@@ -266,6 +266,7 @@ WV_MENU_VSMO,
 WV_MENU_VSMC,
 WV_MENU_SEP9A,
 WV_MENU_VSBS,
+WV_MENU_SORTSIGS,
 WV_MENU_SEP10,
 WV_MENU_ESTS,
 WV_MENU_SEP10A,
@@ -412,6 +413,7 @@ void menu_help(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_version(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_expand(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_toggle_group(gpointer null_data, guint callback_action, GtkWidget *widget);
+void menu_sort_signals(gpointer null_data, guint callback_action, GtkWidget *widget);
 
 gtkwave_mlist_t *retrieve_menu_items_array(int *num_items);
 
