@@ -303,7 +303,7 @@ while(h[0])	/* should never exit through this point the way we set up histents w
 		if((h[i]->flags & HIST_STRING))
 			{
 			if(h[i]->time >= 0)
-				{ 
+				{
 				if(h[i]->v.h_vector)
 					{
 					if((GLOBALS->loaded_file_type == GHW_FILE) && (h[i]->v.h_vector[0] == '\'') && (h[i]->v.h_vector[1]) && (h[i]->v.h_vector[2] == '\''))
@@ -346,28 +346,28 @@ while(h[0])	/* should never exit through this point the way we set up histents w
 					{
 					case AN_0: case '0':
 						enc = AN_1; break;
-	
+
 					case AN_1: case '1':
 						enc = AN_0; break;
-	
+
 					case AN_H: case 'h': case 'H':
 						enc = AN_L; break;
-	
+
 					case AN_L: case 'l': case 'L':
 						enc = AN_H; break;
-	
+
 					case 'x': case 'X':
 						enc = AN_X; break;
-	
+
 					case 'z': case 'Z':
 						enc = AN_Z; break;
-	
+
 					case 'u': case 'U':
 						enc = AN_U; break;
-	
+
 					case 'w': case 'W':
 						enc = AN_W; break;
-	
+
 					default:
 						enc = enc & AN_MSK; break;
 					}
@@ -396,7 +396,7 @@ while(h[0])	/* should never exit through this point the way we set up histents w
 						{
 						strcat((char *)vadd->v, h[i]->v.h_vector);
 						}
-					}			
+					}
 				}
 			}
 
@@ -503,7 +503,7 @@ if(!wild_active)	/* short circuit wildcard evaluation with bsearch */
 			nexp = ExtractNodeSingleBit(&s->n[rows], atoi(str+1));
 			if(nexp)
 				{
-				AddNode(nexp, alias);
+				AddNode(nexp, alias, 0);
 				return(~0);
 				}
 			}
@@ -514,7 +514,7 @@ if(!wild_active)	/* short circuit wildcard evaluation with bsearch */
 		{
 		if((s=symfind(str, &rows)))
 			{
-			AddNode(&s->n[rows],alias);
+			AddNode(&s->n[rows],alias, 0);
 			return(~0);
 			}
 			else
@@ -530,7 +530,7 @@ if(!wild_active)	/* short circuit wildcard evaluation with bsearch */
 			str2[l+3] = 0;
 			if((s=symfind(str2, &rows)))
 			{
-			AddNode(&s->n[rows],alias);
+			AddNode(&s->n[rows],alias, 0);
 			return(~0);
 			}
 			else
@@ -561,7 +561,7 @@ if(len)
 		{
 		if(wave_regex_match(GLOBALS->facs[i]->name, WAVE_REGEX_WILD))
 			{
-			AddNode(GLOBALS->facs[i]->n,NULL);
+			AddNode(GLOBALS->facs[i]->n,NULL, 0);
 			made=~0;
 			if(quick_return) break;
 			}
@@ -970,7 +970,7 @@ if((b=makevec_selected(alias, numrows, direction)))
         if((v=bits2vector(b)))
                 {
                 v->bits=b;      /* only needed for savefile function */
-                AddVector(v, NULL);
+                AddVector(v, NULL, 0);
                 free_2(b->name);
                 b->name=NULL;
                 return(v!=NULL);
@@ -1187,7 +1187,7 @@ return(b);
 /*
  * add vector made in previous function
  */
-int add_vector_chain(struct symbol *s, int len)
+int add_vector_chain(struct symbol *s, int len, int select)
 {
 bvptr v=NULL;
 bptr b=NULL;
@@ -1199,7 +1199,7 @@ if(len>1)
 	        if((v=bits2vector(b)))
 	                {
 	                v->bits=b;      /* only needed for savefile function */
-	                AddVector(v, NULL);
+	                AddVector(v, NULL, select);
 	                free_2(b->name);
 	                b->name=NULL;
 	                return(v!=NULL);
@@ -1215,7 +1215,7 @@ if(len>1)
 	}
 	else
 	{
-	return(AddNode(s->n,NULL));
+	return(AddNode(s->n,NULL, select));
 	}
 }
 
@@ -1385,7 +1385,7 @@ if(lo!=hi)
 	        if((v=bits2vector(b)))
 	                {
 	                v->bits=b;      /* only needed for savefile function */
-	                AddVector(v, NULL);
+	                AddVector(v, NULL, 0);
 	                free_2(b->name);
 	                b->name=NULL;
 	                return(v!=NULL);
@@ -1401,7 +1401,7 @@ if(lo!=hi)
 	}
 	else
 	{
-	return(AddNode(GLOBALS->facs[lo]->n,NULL));
+	return(AddNode(GLOBALS->facs[lo]->n,NULL, 0));
 	}
 }
 
@@ -1915,7 +1915,7 @@ if(!n->extvals)
 		                {
                 		if(namex[j]=='[') break;
 				if(namex[j]==':') colon_seen = 1;
-                		}  
+                		}
 
 			if((j>-1)&&(colon_seen))
 				{
@@ -2173,7 +2173,7 @@ if(!n->extvals)
 		                {
                 		if(namex[j]=='[') break;
 				if(namex[j]==':') colon_seen = 1;
-                		}  
+                		}
 
 			if((j>-1)&&(colon_seen))
 				{

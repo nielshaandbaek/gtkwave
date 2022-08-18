@@ -110,7 +110,7 @@ int add_vector_selected(char *alias, int numrows, char direction);
 struct Bits *makevec_range(char *vec, int lo, int hi, char direction);
 int add_vector_range(char *alias, int lo, int hi, char direction);
 struct Bits *makevec_chain(char *vec, struct symbol *sym, int len);
-int add_vector_chain(struct symbol *s, int len);
+int add_vector_chain(struct symbol *s, int len, int select);
 char *makename_chain(struct symbol *sym);
 
 /* splash screen activation (version >= GTK2 only) */
@@ -125,4 +125,3 @@ char set_s_selected(struct symbol *s, char value);
 void destroy_s_selected(void);
 
 #endif
-

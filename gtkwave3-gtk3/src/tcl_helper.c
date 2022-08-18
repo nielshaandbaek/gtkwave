@@ -817,13 +817,13 @@ if(which_msb <= which_lsb)
 	for(i=which_msb;i<=which_lsb;i++)
 		{
 	        nexp = ExtractNodeSingleBit(s->n, i);
-	        if(nexp)  
+	        if(nexp)
 	 		{
-	                AddNode(nexp, NULL);
+	                AddNode(nexp, NULL, 0);
 	                }
 	                else
 	                {
-	                AddNodeUnroll(s->n, NULL);
+	                AddNodeUnroll(s->n, NULL, 0);
 	                }
 		}
 	}
@@ -832,13 +832,13 @@ if(which_msb <= which_lsb)
 	for(i=which_msb;i>=which_lsb;i--)
 		{
 	        nexp = ExtractNodeSingleBit(s->n, i);
-	        if(nexp)  
+	        if(nexp)
 	 		{
-	                AddNode(nexp, NULL);
+	                AddNode(nexp, NULL, 0);
 	                }
 	                else
 	                {
-	                AddNodeUnroll(s->n, NULL);
+	                AddNodeUnroll(s->n, NULL, 0);
 	                }
 		}
 	}
@@ -846,16 +846,16 @@ if(which_msb <= which_lsb)
 v = combine_traces(1, NULL); /* down */
   if (v)
     	{
-      	AddVector(v, NULL);
+      	AddVector(v, NULL, 0);
       	free_2(v->bits->name);
       	v->bits->name=NULL;
-                
+
       	t = GLOBALS->traces.last;
-                
+
       	RemoveTrace(t, 0);
 
       	/* t is now the composite signal trace */
-                  
+
 	create_group("unused_0", t);
 	CloseTrace(t);
     	}
@@ -1222,11 +1222,11 @@ for(ii=0;ii<c;ii++)
 				*most_recent_lbrack_list[ii] = '[';
 		                if(nexp)
 		                        {
-		                        AddNode(nexp, NULL);
+		                        AddNode(nexp, NULL, 0);
 		                        }
 					else
 					{
-					AddNodeUnroll(s->n, NULL);
+					AddNodeUnroll(s->n, NULL, 0);
 					}
 				}
 				else
@@ -1240,13 +1240,13 @@ for(ii=0;ii<c;ii++)
 
 			if(!schain)
 				{
-				AddNodeUnroll(s->n, NULL);
+				AddNodeUnroll(s->n, NULL, 0);
 				}
 				else
 				{
 				int len = 0;
 				while(schain) { len++; schain = schain->vec_chain; }
-				add_vector_chain(s->vec_root, len);
+				add_vector_chain(s->vec_root, len, 0);
 				}
 			}
 		}
@@ -3139,5 +3139,3 @@ return(strdup_2("--script TCL_ERROR : Tcl support not compiled into gtkwave\n"))
 
 
 #endif
-
-

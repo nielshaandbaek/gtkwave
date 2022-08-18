@@ -1147,7 +1147,7 @@ if(*w2=='+')
 		nexp = ExtractNodeSingleBit(&s->n[rows], atoi(suffix+1));
 		if(nexp)
 		  {
-		    AddNode(nexp, prefix+1);
+		    AddNode(nexp, prefix+1, 0);
 		    return(~0);
 		  }
 		else
@@ -1192,7 +1192,7 @@ if(*w2=='+')
 			free_2(ns);
 			if(s)
 				{
-				AddNode(&s->n[rows], prefix+1);
+				AddNode(&s->n[rows], prefix+1, 0);
 				return(~0);
 				}
 
@@ -1251,7 +1251,7 @@ if((*w2=='#')||(*w2==':'))
 		if((v=bits2vector(b)))
 			{
 			v->bits=b;	/* only needed for savefile function */
-			AddVector(v, alias);
+			AddVector(v, alias, 0);
 			free_2(b->name);
 			b->name=NULL;
 			goto grp_bot;
@@ -1679,7 +1679,7 @@ else if (*w2 == '[')
 				{
 				pnt = pnt2 + 1;
 				if((*pnt) && (isspace((int)(unsigned char)*pnt))) pnt++;
-	
+
 				if(*pnt)
 					{
 					if(GLOBALS->marker_names[which]) free_2(GLOBALS->marker_names[which]);
@@ -2482,7 +2482,7 @@ if(!dfile && orig_save && orig_dump)
 	int pfxlen = strlen(pfx);
 	char *orig_save2 = malloc_2(strlen(orig_save) + pfxlen + 1);
 	char *orig_dump2 = malloc_2(strlen(orig_dump) + pfxlen + 1);
-	
+
 	strcpy(orig_save2, pfx); strcat(orig_save2, orig_save);
 	strcpy(orig_dump2, pfx); strcat(orig_dump2, orig_dump);
 
@@ -2795,4 +2795,3 @@ int suffix_check(const char *s, const char *sfx)
 unsigned int sfxlen = strlen(sfx);
 return((strlen(s)>=sfxlen)&&(!strcasecmp(s+strlen(s)-sfxlen,sfx)));
 }
-

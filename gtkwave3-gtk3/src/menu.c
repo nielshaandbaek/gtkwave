@@ -2574,7 +2574,7 @@ static unsigned expand_trace(Trptr t_top)
 		{
 		  if(bits->nodes[i]->expansion) bits->nodes[i]->expansion->refcnt++;
 		  GLOBALS->which_t_color = color;
-		  AddNodeTraceReturn(bits->nodes[i],NULL, &tfix);
+		  AddNodeTraceReturn(bits->nodes[i],NULL, &tfix, 0);
 		  if(bits->attribs)
 		    {
 		      tfix->shift = otime + bits->attribs[i].shift;
@@ -2587,7 +2587,7 @@ static unsigned expand_trace(Trptr t_top)
 		{
 		  if(bits->nodes[i]->expansion) bits->nodes[i]->expansion->refcnt++;
 		  GLOBALS->which_t_color = color;
-		  AddNodeTraceReturn(bits->nodes[i],NULL, &tfix);
+		  AddNodeTraceReturn(bits->nodes[i],NULL, &tfix, 0);
 		  if(bits->attribs)
 		    {
 		      tfix->shift = otime + bits->attribs[i].shift;
@@ -2611,7 +2611,7 @@ static unsigned expand_trace(Trptr t_top)
 	      for(i=0;i<e->width;i++)
 		{
 		  GLOBALS->which_t_color = color;
-		  AddNode(e->narray[i], NULL);
+		  AddNode(e->narray[i], NULL, 0);
 		}
 	      GLOBALS->do_hier_compress = dhc_sav;
 	      free_2(e->narray);
@@ -3510,7 +3510,7 @@ menu_combine_down(gpointer null_data, guint callback_action, GtkWidget *widget)
     {
       Trptr t;
 
-      AddVector(v, NULL);
+      AddVector(v, NULL, 0);
       free_2(v->bits->name);
       v->bits->name=NULL;
 
@@ -3562,7 +3562,7 @@ menu_combine_up(gpointer null_data, guint callback_action, GtkWidget *widget)
     {
       Trptr t;
 
-      AddVector(v, NULL);
+      AddVector(v, NULL, 0);
       free_2(v->bits->name);
       v->bits->name=NULL;
 
@@ -6198,11 +6198,11 @@ menu_open_hierarchy_2a(null_data, callback_action, widget, FST_MT_SOURCEISTEM); 
 
 /**/
 
-void menu_recurse_import(gpointer null_data, guint callback_action, GtkWidget *widget)
+void menu_import(gpointer null_data, guint callback_action, GtkWidget *widget)
 {
 (void) null_data;
 
-recurse_import(widget, callback_action);
+recurse_import(widget, callback_action, 0);
 }
 
 /**/
@@ -8615,9 +8615,9 @@ void do_popup_menu (GtkWidget *my_widget, GdkEventButton *event)
 
 static gtkwave_mlist_t sst_popmenu_items[] =
 {
-    WAVE_GTKIFE("/Recurse Import/Append", NULL, menu_recurse_import, WV_RECURSE_APPEND, "<Item>"),
-    WAVE_GTKIFE("/Recurse Import/Insert", NULL, menu_recurse_import, WV_RECURSE_INSERT, "<Item>"),
-    WAVE_GTKIFE("/Recurse Import/Replace", NULL, menu_recurse_import, WV_RECURSE_REPLACE, "<Item>"),
+    WAVE_GTKIFE("/Append", NULL, menu_import, WV_APPEND, "<Item>"),
+    WAVE_GTKIFE("/Insert", NULL, menu_import, WV_INSERT, "<Item>"),
+    WAVE_GTKIFE("/Replace", NULL, menu_import, WV_REPLACE, "<Item>"),
 
 #if !defined __MINGW32__
     WAVE_GTKIFE("/Open Source Definition", NULL, menu_open_sst_hierarchy_source, WV_MENU_OPENHS, "<Item>"),

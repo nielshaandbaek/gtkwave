@@ -313,9 +313,9 @@ WV_MENU_NUMITEMS
 };
 
 enum WV_RecurseType {
-WV_RECURSE_APPEND,
-WV_RECURSE_INSERT,
-WV_RECURSE_REPLACE,
+WV_APPEND,
+WV_INSERT,
+WV_REPLACE,
 };
 
 void menu_new_viewer(gpointer null_data, guint callback_action, GtkWidget *widget);
@@ -414,6 +414,7 @@ void menu_version(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_expand(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_toggle_group(gpointer null_data, guint callback_action, GtkWidget *widget);
 void menu_sort_signals(gpointer null_data, guint callback_action, GtkWidget *widget);
+void menu_create_group(gpointer null_data, guint callback_action, GtkWidget *widget);
 
 gtkwave_mlist_t *retrieve_menu_items_array(int *num_items);
 

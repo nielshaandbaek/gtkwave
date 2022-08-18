@@ -48,7 +48,7 @@ if(path)
 	if (gtk_tree_model_get_iter(model, &iter, path)) /* null return should not happen */
                 {
 		gtk_tree_model_get(model, &iter, NAME_COLUMN, &nam, PTR_COLUMN, &s, -1);
-		
+
                 if(!path_currently_selected)
                         {
 			set_s_selected(s, 1);
@@ -343,7 +343,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 
 		if((!s->vec_root)||(!GLOBALS->autocoalesce))
 			{
-			AddNodeUnroll(s->n, NULL);
+			AddNodeUnroll(s->n, NULL, 0);
 			}
 			else
 			{
@@ -363,7 +363,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 				len++;
 				t=t->vec_chain;
 				}
-			if(len)add_vector_chain(s->vec_root, len);
+			if(len)add_vector_chain(s->vec_root, len, 0);
 			}
 		}
 	}
@@ -444,7 +444,7 @@ if(GLOBALS->is_lx2)
 
                 gtk_tree_model_get(GTK_TREE_MODEL (GLOBALS->sig_store_search), &iter, PTR_COLUMN, &s, -1);
                 gtk_tree_model_iter_next (GTK_TREE_MODEL (GLOBALS->sig_store_search), &iter);
-		
+
 		if(get_s_selected(s))
 			{
 			if((!s->vec_root)||(!GLOBALS->autocoalesce))
@@ -499,7 +499,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 
 		if((!s->vec_root)||(!GLOBALS->autocoalesce))
 			{
-			AddNodeUnroll(s->n, NULL);
+			AddNodeUnroll(s->n, NULL, 0);
 			}
 			else
 			{
@@ -518,7 +518,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 				len++;
 				t=t->vec_chain;
 				}
-			if(len)add_vector_chain(s->vec_root, len);
+			if(len)add_vector_chain(s->vec_root, len, 0);
 			}
 		}
 	}
@@ -686,7 +686,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 
 		if((!s->vec_root)||(!GLOBALS->autocoalesce))
 			{
-			AddNodeUnroll(s->n, NULL);
+			AddNodeUnroll(s->n, NULL, 0);
 			}
 			else
 			{
@@ -705,7 +705,7 @@ for(i=0;i<GLOBALS->num_rows_search_c_2;i++)
 				len++;
 				t=t->vec_chain;
 				}
-			if(len)add_vector_chain(s->vec_root, len);
+			if(len)add_vector_chain(s->vec_root, len, 0);
 			}
 		}
 	}
@@ -814,7 +814,7 @@ for(i=0;i<GLOBALS->numfacs;i++)
 
 		if(!GLOBALS->facs[i]->vec_root)
 			{
-        		gtk_list_store_append (GTK_LIST_STORE(GLOBALS->sig_store_search), &iter); 
+        		gtk_list_store_append (GTK_LIST_STORE(GLOBALS->sig_store_search), &iter);
         		gtk_list_store_set (GTK_LIST_STORE(GLOBALS->sig_store_search), &iter,
                                     NAME_COLUMN, hfacname,
 				    PTR_COLUMN, GLOBALS->facs[i],
@@ -980,7 +980,7 @@ void searchbox(char *title, GCallback func)
 
     /* Create the GtkProgressBar */
     GLOBALS->pdata->pbar = gtk_progress_bar_new();
-    gtk_progress_bar_set_text(GTK_PROGRESS_BAR(GLOBALS->pdata->pbar), " "); 
+    gtk_progress_bar_set_text(GTK_PROGRESS_BAR(GLOBALS->pdata->pbar), " ");
     gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(GLOBALS->pdata->pbar), 0.0);
     gtk_widget_show(GLOBALS->pdata->pbar);
     gtk_box_pack_start (GTK_BOX (vbox1), GLOBALS->pdata->pbar, TRUE, TRUE, 0);
@@ -1165,4 +1165,3 @@ g_signal_connect (combo_box, "changed", G_CALLBACK (on_changed), NULL);
 
     if(strlen(GLOBALS->searchbox_text_search_c_1)) search_enter_callback(GLOBALS->entry_search_c_3,NULL);
 }
-

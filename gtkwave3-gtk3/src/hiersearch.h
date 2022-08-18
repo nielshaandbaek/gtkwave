@@ -14,11 +14,10 @@ void hier_searchbox(char *title, GCallback func);
 void refresh_hier_tree(struct tree *t);
 int hier_searchbox_is_active(void);
 
-void recurse_fetch_high_low(struct tree *t);
+void recurse_fetch_high_low(struct tree *t, int max_depth);
 
 struct tree *fetchhigh(struct tree *t);
 struct tree *fetchlow(struct tree *t);
 void fetchvex(struct tree *t, char direction);
 
 #endif
-

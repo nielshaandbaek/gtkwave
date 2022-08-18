@@ -23,14 +23,13 @@ int treebox_is_active(void);
 
 void DND_helper_quartz(char *data);
 
-void recurse_import(GtkWidget *widget, guint callback_action);
-#define WV_RECURSE_IMPORT_WARN (0)
+void recurse_import(GtkWidget *widget, guint callback_action, int max_depth);
+#define WV_RECURSE_IMPORT_WARN (1000)
 
-enum sst_cb_action { SST_ACTION_INSERT, SST_ACTION_REPLACE, SST_ACTION_APPEND, SST_ACTION_PREPEND, SST_ACTION_NONE };
+enum sst_cb_action { SST_ACTION_INSERT, SST_ACTION_REPLACE, SST_ACTION_APPEND, SST_ACTION_PREPEND, SST_ACTION_NONE, SST_ACTION_APPEND_AND_GROUP };
 
 enum { VIEW_DRAG_INACTIVE, TREE_TO_VIEW_DRAG_ACTIVE, SEARCH_TO_VIEW_DRAG_ACTIVE };
 
 void action_callback(enum sst_cb_action action);
 
 #endif
-

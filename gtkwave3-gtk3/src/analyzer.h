@@ -381,7 +381,7 @@ enum nodeVarDir {
 typedef uint64_t TraceFlagsType;
 #define TRACEFLAGSSCNFMT SCNx64
 #define TRACEFLAGSPRIFMT PRIx64
-#define TRACEFLAGSPRIuFMT PRIu64 
+#define TRACEFLAGSPRIuFMT PRIu64
 
 typedef struct BitAttributes
   {
@@ -601,10 +601,10 @@ Trptr GivePrevTrace(Trptr t);
 int UpdateTracesVisible(void);
 
 void DisplayTraces(int val);
-int AddNodeTraceReturn(nptr nd, char *aliasname, Trptr *tret);
-int AddNode(nptr nd, char *aliasname);
-int AddNodeUnroll(nptr nd, char *aliasname);
-int AddVector(bvptr vec, char *aliasname);
+int AddNodeTraceReturn(nptr nd, char *aliasname, Trptr *tret, int select);
+int AddNode(nptr nd, char *aliasname, int select);
+int AddNodeUnroll(nptr nd, char *aliasname, int select);
+int AddVector(bvptr vec, char *aliasname, int select);
 int AddBlankTrace(char *commentname);
 int InsertBlankTrace(char *comment, TraceFlagsType different_flags);
 void RemoveNode(nptr n);
