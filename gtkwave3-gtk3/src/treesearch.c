@@ -69,6 +69,20 @@ void free_afl(void)
   }
 }
 
+void unhighlight_all(void)
+{
+  Trptr t;
+  t=GLOBALS->traces.first;
+  while(t)
+  {
+    if(t->flags&TR_HIGHLIGHT)
+    {
+      t->flags &= ~TR_HIGHLIGHT;
+    }
+    t=t->t_next;
+  }
+}
+
 /* point to pure signame (remove hierarchy) for fill_sig_store() */
 static char *prune_hierarchy(char *nam)
 {
@@ -708,7 +722,6 @@ static gboolean filter_edit_cb(GtkWidget *widget, GdkEventKey *ev, gpointer *dat
    This catch the return key to update the signal area.  */
 static gboolean sig_view_cb(GtkWidget *widget, GdkEventKey *ev, gpointer *data)
 {
-  Trptr t;
   (void)data;
 
   /* Maybe this test is too strong ?  */
@@ -716,15 +729,8 @@ static gboolean sig_view_cb(GtkWidget *widget, GdkEventKey *ev, gpointer *data)
   {
     //set_window_busy(widget);
 
-    t=GLOBALS->traces.first;
-    while(t)
-    {
-      if(t->flags&TR_HIGHLIGHT)
-      {
-        t->flags &= ~TR_HIGHLIGHT;
-      }
-      t=t->t_next;
-    }
+   unhighlight_all();
+
     action_callback(SST_ACTION_APPEND_AND_GROUP);
     //set_window_idle(widget);
   }
@@ -1928,6 +1934,9 @@ static void recurse_append_callback(GtkWidget *widget, gpointer data)
   if (!GLOBALS->sst_sig_root_treesearch_gtk2_c_1 || !data)
     return;
 
+  unhighlight_all();
+  redraw_signals_and_waves();
+
   set_window_busy(widget);
 
   for (i = GLOBALS->fetchlow; i <= GLOBALS->fetchhigh; i++)
@@ -2006,18 +2015,21 @@ static void recurse_append_callback(GtkWidget *widget, gpointer data)
           t = t->vec_chain;
         }
         if (len)
-          add_vector_chain(s->vec_root, len, 0);
+          add_vector_chain(s->vec_root, len, 1);
       }
     }
     else
     {
-      AddNodeUnroll(s->n, NULL, 0);
+      AddNodeUnroll(s->n, NULL, 1);
     }
   }
 
   set_window_idle(widget);
 
   gw_signal_list_scroll_to_trace(GW_SIGNAL_LIST(GLOBALS->signalarea), GLOBALS->traces.last);
+
+  menu_create_group(NULL, 0, NULL);
+
   redraw_signals_and_waves();
 }
 
@@ -2029,11 +2041,15 @@ static void recurse_insert_callback(GtkWidget *widget, gpointer data)
   if (!GLOBALS->sst_sig_root_treesearch_gtk2_c_1 || !data)
     return;
 
+  unhighlight_all();
+  redraw_signals_and_waves();
+
   memcpy(&tcache, &GLOBALS->traces, sizeof(Traces));
   GLOBALS->traces.total = 0;
   GLOBALS->traces.first = GLOBALS->traces.last = NULL;
 
   set_window_busy(widget);
+
 
   for (i = GLOBALS->fetchlow; i <= GLOBALS->fetchhigh; i++)
   {
@@ -2111,12 +2127,12 @@ static void recurse_insert_callback(GtkWidget *widget, gpointer data)
           t = t->vec_chain;
         }
         if (len)
-          add_vector_chain(s->vec_root, len, 0);
+          add_vector_chain(s->vec_root, len, 1);
       }
     }
     else
     {
-      AddNodeUnroll(s->n, NULL, 0);
+      AddNodeUnroll(s->n, NULL, 1);
     }
   }
 
@@ -2134,6 +2150,8 @@ static void recurse_insert_callback(GtkWidget *widget, gpointer data)
   GLOBALS->traces.buffercount = tcache.buffercount;
   GLOBALS->traces.buffer = tcache.buffer;
   GLOBALS->traces.bufferlast = tcache.bufferlast;
+
+  menu_create_group(NULL, 0, NULL);
 
   redraw_signals_and_waves();
 }
