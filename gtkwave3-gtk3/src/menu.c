@@ -1607,16 +1607,16 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Full Prec On.\n");
 	                }
-	
+
 		calczoom(GLOBALS->tims.zoom);
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			fix_wavehadj();
-	
+
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "changed"); /* force zoom update */
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "value_changed"); /* force zoom update */
-	
+
 			update_maxmarker_labels();
 			}
 		}
@@ -1735,12 +1735,12 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Pow10 Snap On.\n");
 	                }
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			calczoom(GLOBALS->tims.zoom);
 			fix_wavehadj();
-	
+
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "changed"); /* force zoom update */
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)), "value_changed"); /* force zoom update */
 			}
@@ -1995,7 +1995,7 @@ if(GLOBALS->helpbox_is_active)
 	                {
 	                status_text("Resizing disabled.\n");
 	                }
-	
+
 	        if(GLOBALS->signalarea && GLOBALS->wavearea)
 	                {
 			for(i=0;i<2;i++)
@@ -3233,7 +3233,7 @@ bvptr combine_traces(int direction, Trptr single_trace_only)
 								else
 								{
 								t_botname = vname;
-								}	
+								}
 							}
 						}
 						else
@@ -3828,7 +3828,7 @@ menu_new_viewer_tab_cleanup_2(char *fname, int optimize_vcd)
 
 		if(g_old->loaded_file_type == MISSING_FILE) /* remove original "blank" page */
 			{
-                        if(g_old->missing_file_toolbar) 
+                        if(g_old->missing_file_toolbar)
 				{
 #ifndef WAVE_ALLOW_GTK3_HEADER_BAR
 				gtk_widget_set_sensitive(g_old->missing_file_toolbar, TRUE);
@@ -4756,7 +4756,7 @@ if(gw)
         GtkAllocation allocation;
         gtk_widget_get_allocation(GLOBALS->mainwindow, &allocation);
 
-	pb = gdk_pixbuf_get_from_window (gw, 0, 0, allocation.width, allocation.height); 
+	pb = gdk_pixbuf_get_from_window (gw, 0, 0, allocation.width, allocation.height);
 
 	if(pb)
 		{
@@ -6202,7 +6202,7 @@ void menu_recurse_import(gpointer null_data, guint callback_action, GtkWidget *w
 {
 (void) null_data;
 
-recurse_import(widget, callback_action);
+recurse_import(widget, callback_action, 0);
 }
 
 /**/
@@ -6632,7 +6632,7 @@ if(GLOBALS->helpbox_is_active)
         help_text_bold("\n\nData Format-Time");
         help_text(
                 " will step through all highlighted traces and ensure that"
-                " bits and vectors with this qualifier will display as time values." 
+                " bits and vectors with this qualifier will display as time values."
         );
         return;
         }
@@ -6652,7 +6652,7 @@ if(GLOBALS->helpbox_is_active)
         help_text_bold("\n\nData Format-Enum");
         help_text(
                 " will step through all highlighted traces and ensure that"
-                " bits and vectors with this qualifier will display as enum values, provided such values were dumped into file." 
+                " bits and vectors with this qualifier will display as enum values, provided such values were dumped into file."
         );
         return;
         }
@@ -7533,7 +7533,7 @@ if(GLOBALS->helpbox_is_active)
 #endif
 			gtk_window_unfullscreen (GTK_WINDOW(GLOBALS->mainwindow));
 			}
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)),"changed");
@@ -7588,7 +7588,7 @@ if(GLOBALS->helpbox_is_active)
 			{
 			if(GLOBALS->top_table) gtk_widget_hide(GLOBALS->top_table);
 			}
-	
+
 		if(GLOBALS->wave_hslider)
 			{
 			g_signal_emit_by_name (XXX_GTK_OBJECT (GTK_ADJUSTMENT(GLOBALS->wave_hslider)),"changed");
@@ -8581,9 +8581,9 @@ void do_popup_menu (GtkWidget *my_widget, GdkEventButton *event)
 
 static gtkwave_mlist_t sst_popmenu_items[] =
 {
-    WAVE_GTKIFE("/Recurse Import/Append", NULL, menu_recurse_import, WV_RECURSE_APPEND, "<Item>"),
-    WAVE_GTKIFE("/Recurse Import/Insert", NULL, menu_recurse_import, WV_RECURSE_INSERT, "<Item>"),
-    WAVE_GTKIFE("/Recurse Import/Replace", NULL, menu_recurse_import, WV_RECURSE_REPLACE, "<Item>"),
+    WAVE_GTKIFE("/Append", NULL, menu_recurse_import, WV_RECURSE_APPEND, "<Item>"),
+    WAVE_GTKIFE("/Insert", NULL, menu_recurse_import, WV_RECURSE_INSERT, "<Item>"),
+    WAVE_GTKIFE("/Replace", NULL, menu_recurse_import, WV_RECURSE_REPLACE, "<Item>"),
 
 #if !defined __MINGW32__
     WAVE_GTKIFE("/Open Source Definition", NULL, menu_open_sst_hierarchy_source, WV_MENU_OPENHS, "<Item>"),
@@ -8937,7 +8937,7 @@ GtkWidget *mw;
 
 menu_wlist = calloc(nmenu_items, sizeof(GtkWidget *)); /* calloc, not calloc_2() */
 
-menubar = alt_menu(mi, nmenu_items, menu_wlist, global_accel, 
+menubar = alt_menu(mi, nmenu_items, menu_wlist, global_accel,
 #ifdef WAVE_ALLOW_GTK3_HEADER_BAR
 	FALSE
 #else

@@ -367,7 +367,7 @@ if(model && gtk_tree_model_get_iter_first(model, &iter))
 
 					memset(exphist, 0, depth * sizeof (gboolean)); /* scan-build */
 					memset(pathhist, 0, depth * sizeof (GtkTreePath *)); /* scan-build */
-				
+
 					while(gtk_tree_path_up(path2))
 						{
 						exphist[i] = gtk_tree_view_row_expanded(GTK_TREE_VIEW(GLOBALS->treeview_main), path2);
@@ -380,7 +380,7 @@ if(model && gtk_tree_model_get_iter_first(model, &iter))
 						{
 						gtk_tree_view_expand_row(GTK_TREE_VIEW(GLOBALS->treeview_main), pathhist[i], 0);
 						}
-					
+
 					gtk_tree_view_expand_row(GTK_TREE_VIEW(GLOBALS->treeview_main), path, 0);
 
 					for (i = depth - 1; i >= 0; i--) /* collapse back up */
@@ -391,7 +391,7 @@ if(model && gtk_tree_model_get_iter_first(model, &iter))
 							}
 
 						gtk_tree_path_free(pathhist[i]);
-						}					
+						}
 
 					gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW(GLOBALS->treeview_main), path, NULL, TRUE, 0.5, 0.5);
 
@@ -411,7 +411,7 @@ if(model && gtk_tree_model_get_iter_first(model, &iter))
 					gtk_tree_path_free(path);
 					if (!child_exists)
 	        				{
-	        				break; 
+	        				break;
 	        				}
 	                  		name = ++zap;
 	                  		continue;
@@ -504,7 +504,7 @@ if(model && gtk_tree_model_get_iter_first(model, &iter))
 					gtk_tree_path_free(path);
 					if (!child_exists)
 	        				{
-	        				break; 
+	        				break;
 	        				}
 	                  		name = ++zap;
 	                  		continue;
@@ -536,7 +536,7 @@ char hier_suffix[2];
 GtkTreePath *path2;
 
 if (!gtk_tree_model_get_iter(model, &iter, path))
-	{		
+	{
 	return; /* path describes a non-existing row - should not happen */
 	}
 
@@ -554,7 +554,7 @@ for(i=depth-1;i>=0;i--)
         gtk_tree_model_get_iter(model, &iter, path2);
 	gtk_tree_model_get(model, &iter, XXX_TREE_COLUMN, &gctr[i], -1);
 	t = gctr[i];
-	
+
         len += (strlen(t->name) + 1);
 	gtk_tree_path_up (path2);
         }
@@ -595,7 +595,7 @@ GtkTreeIter   iter;
 struct tree *t;
 
 if (!gtk_tree_model_get_iter(model, &iter, path))
-	{		
+	{
 	return; /* path describes a non-existing row - should not happen */
 	}
 
@@ -736,7 +736,7 @@ int found;
 
 
 if (!gtk_tree_model_get_iter(model, iter, path))
-	{		
+	{
 	return; /* path describes a non-existing row - should not happen */
 	}
 
@@ -754,7 +754,7 @@ for(i=depth-1;i>=0;i--)
         gtk_tree_model_get_iter(model, iter, path2);
 	gtk_tree_model_get(model, iter, XXX_TREE_COLUMN, &gctr[i], -1);
 	t = gctr[i];
-	
+
         len += (strlen(t->name) + 1);
 	gtk_tree_path_up (path2);
         }
@@ -1130,7 +1130,7 @@ action_callback(enum sst_cb_action action)
 	{
 	gw_signal_list_scroll_to_trace(GW_SIGNAL_LIST(GLOBALS->signalarea), GLOBALS->traces.last);
 	}
-  redraw_signals_and_waves(); 
+  redraw_signals_and_waves();
 }
 
 static void insert_callback(GtkWidget *widget, GtkWidget *nothing)
@@ -1319,7 +1319,7 @@ do_tooltips:
     gtk_widget_show (vpan);
 
 #if GTK_CHECK_VERSION(3,0,0)
-    gtk_widget_set_vexpand(vpan, TRUE);   
+    gtk_widget_set_vexpand(vpan, TRUE);
 #endif
 
     gtk_box_pack_start (GTK_BOX (vbox), vpan, TRUE, TRUE, 1);
@@ -2253,14 +2253,14 @@ redraw_signals_and_waves();
 }
 
 
-void recurse_import(GtkWidget *widget, guint callback_action)
+void recurse_import(GtkWidget *widget, guint callback_action, int max_depth)
 {
 if(GLOBALS->sst_sig_root_treesearch_gtk2_c_1)
 	{
 	int fz;
 
 	GLOBALS->fetchlow = GLOBALS->fetchhigh = -1;
-	if(GLOBALS->sst_sig_root_treesearch_gtk2_c_1->child) recurse_fetch_high_low(GLOBALS->sst_sig_root_treesearch_gtk2_c_1->child);
+	if(GLOBALS->sst_sig_root_treesearch_gtk2_c_1->child) recurse_fetch_high_low(GLOBALS->sst_sig_root_treesearch_gtk2_c_1->child, max_depth);
 	fz = GLOBALS->fetchhigh - GLOBALS->fetchlow + 1;
 	void (*func)(GtkWidget *, gpointer);
 
@@ -2268,7 +2268,7 @@ if(GLOBALS->sst_sig_root_treesearch_gtk2_c_1)
 		{
 		case WV_RECURSE_INSERT:		func = recurse_insert_callback; break;
 		case WV_RECURSE_REPLACE:	func = recurse_replace_callback; break;
-	
+
 		case WV_RECURSE_APPEND:
 		default:			func = recurse_append_callback; break;
 		}
@@ -2281,7 +2281,7 @@ if(GLOBALS->sst_sig_root_treesearch_gtk2_c_1)
 			{
 			char recwarn[128];
 			sprintf(recwarn, "Really import %d facilit%s?", fz, (fz==1)?"y":"ies");
-		
+
 			simplereqbox("Recurse Warning",300,recwarn,"Yes", "No", G_CALLBACK(func), 0);
 			}
 			else

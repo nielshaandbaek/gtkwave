@@ -318,7 +318,7 @@ static void entrybox_local(char *title, int width, char *default_text, int maxch
 
 /***************************************************************************/
 
-void recurse_fetch_high_low(struct tree *t)
+void recurse_fetch_high_low(struct tree *t, int max_depth)
 {
 top:
 if(t->t_which >= 0)
@@ -335,9 +335,9 @@ if(t->t_which >= 0)
                 }
         }
 
-if(t->child)
+if((t->child) && (max_depth>0))
         {
-        recurse_fetch_high_low(t->child);
+        recurse_fetch_high_low(t->child, max_depth-1);
         }
 
 if(t->next) { t = t->next; goto top; }
@@ -414,7 +414,7 @@ if((!GLOBALS->h_selectedtree_hiersearch_c_1)||(!GLOBALS->h_selectedtree_hiersear
 set_window_busy(widget);
 
 GLOBALS->fetchlow = GLOBALS->fetchhigh = -1;
-recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child);
+recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child, 0);
 
 for(i=GLOBALS->fetchlow;i<=GLOBALS->fetchhigh;i++)
         {
@@ -520,7 +520,7 @@ GLOBALS->traces.first=GLOBALS->traces.last=NULL;
 set_window_busy(widget);
 
 GLOBALS->fetchlow = GLOBALS->fetchhigh = -1;
-recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child);
+recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child, 0);
 
 for(i=GLOBALS->fetchlow;i<=GLOBALS->fetchhigh;i++)
         {
@@ -639,7 +639,7 @@ GLOBALS->traces.first=GLOBALS->traces.last=NULL;
 set_window_busy(widget);
 
 GLOBALS->fetchlow = GLOBALS->fetchhigh = -1;
-recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child);
+recurse_fetch_high_low(GLOBALS->h_selectedtree_hiersearch_c_1->child, 0);
 
 for(i=GLOBALS->fetchlow;i<=GLOBALS->fetchhigh;i++)
         {
@@ -1194,4 +1194,3 @@ void hier_searchbox(char *title, GCallback func)
 
     refresh_hier_tree(GLOBALS->current_tree_hiersearch_c_1);
 }
-
