@@ -335,7 +335,7 @@ for(;;)
 				/* char s1[32]; */
 				unsigned int d2;
 				/* sscanf(last_l+2, "%u r:%u %s %u", &l, &r, s1, &d2); */
-					
+
 				char *ps = last_l+2;
 				char *l_pnt, *r_pnt, *d2_pnt;
 
@@ -343,7 +343,7 @@ for(;;)
 				l_pnt = ps;
 				while(*ps && !isspace(*ps)) { ps++; }
 				while(*ps &&  isspace(*ps)) { ps++; }
-				r_pnt = ps;					
+				r_pnt = ps;
 				while(*ps && !isspace(*ps)) { ps++; }
 				while(*ps &&  isspace(*ps)) { ps++; }
 				/* s1_pnt = ps;	*/
@@ -619,7 +619,7 @@ for(;;)
 				ttype = TREE_UNKNOWN;
 				}
 
-	                allocate_and_decorate_module_tree_node(ttype, cname, ctype,  strlen(cname), strlen(ctype), 0, 0);
+	                allocate_and_decorate_module_tree_node(ttype, cname, ctype,  strlen(cname), strlen(ctype), 0, 0, -1);
 			}
 		}
 	else
@@ -752,7 +752,7 @@ else
                 if(!GLOBALS->do_hier_compress)
                         {
                         str=malloc_2(len+1);
-                        }   
+                        }
                         else
                         {
                         if(len > GLOBALS->f_name_build_buf_len)
@@ -830,7 +830,7 @@ else
                         str=malloc_2(len+1);
                         }
                         else
-                        {   
+                        {
                         if(len > GLOBALS->f_name_build_buf_len)
                                 {
                                 free_2(GLOBALS->f_name_build_buf); GLOBALS->f_name_build_buf = malloc_2((GLOBALS->f_name_build_buf_len=len)+1);
@@ -933,10 +933,10 @@ if((GLOBALS->extload_curr_tree < GLOBALS->extload_max_tree) || (!GLOBALS->extloa
 		case 'U': 	get_varname(s, NULL, NULL, -1, &patched_len);
 				GLOBALS->extload_hlen = GLOBALS->fst_scope_name ? strlen(GLOBALS->fst_scope_name) : 0;
 				break;
-	
+
 		case 'V':	process_extload_variable(s);
 				break;
-	
+
 		case 'E':
 	                {
 			GLOBALS->extload_curr_tree++;
@@ -957,7 +957,7 @@ if((GLOBALS->extload_curr_tree < GLOBALS->extload_max_tree) || (!GLOBALS->extloa
 					}
 				}
 			}
-	
+
 		default:	break;
 		}
 	}
@@ -1038,7 +1038,7 @@ static char zbuf[65537]; /* OK as this does not need to be re-entrant */
 						}
 					}
 					else
-					{				
+					{
 					l = fh->u.var.length - 1;
 					r = 0;
 					}
@@ -1129,7 +1129,7 @@ static char zbuf[65537]; /* OK as this does not need to be re-entrant */
 					default:	    *vdp = ND_DIR_IMPLICIT; break;
 					}
 				}
-			
+
 			if(vtp)
 				{
 				*vtp = fh->u.var.typ;
@@ -1212,7 +1212,7 @@ static char zbuf[65537]; /* OK as this does not need to be re-entrant */
 				case FST_ST_VCD_BEGIN: ttype = TREE_VCD_ST_BEGIN; break;
 				case FST_ST_VCD_GENERATE: ttype = TREE_VCD_ST_GENERATE; break;
 				case FST_ST_VCD_STRUCT: ttype = TREE_VCD_ST_STRUCT; break;
-				case FST_ST_VCD_INTERFACE: ttype = TREE_VCD_ST_INTERFACE; break;				
+				case FST_ST_VCD_INTERFACE: ttype = TREE_VCD_ST_INTERFACE; break;
 				case FST_ST_VHDL_ARCHITECTURE: ttype = TREE_VHDL_ST_ARCHITECTURE; break;
 				case FST_ST_VHDL_RECORD: ttype = TREE_VHDL_ST_RECORD; break;
 				case FST_ST_VHDL_BLOCK: ttype = TREE_VHDL_ST_BLOCK; break;
@@ -1225,7 +1225,7 @@ static char zbuf[65537]; /* OK as this does not need to be re-entrant */
 				default: ttype = TREE_UNKNOWN; break;
 				}
 
-	                allocate_and_decorate_module_tree_node(ttype, fh->u.scope.name, fh->u.scope.component, fh->u.scope.name_length, fh->u.scope.component_length, 0, 0);
+	                allocate_and_decorate_module_tree_node(ttype, fh->u.scope.name, fh->u.scope.component, fh->u.scope.name_length, fh->u.scope.component_length, 0, 0, -1);
 			}
 		}
 	else
@@ -1353,7 +1353,7 @@ else
                 if(!GLOBALS->do_hier_compress)
                         {
                         str=malloc_2(len+1);
-                        }   
+                        }
                         else
                         {
                         if(len > GLOBALS->f_name_build_buf_len)
@@ -1446,7 +1446,7 @@ else
                         str=malloc_2(len+1);
                         }
                         else
-                        {   
+                        {
                         if(len > GLOBALS->f_name_build_buf_len)
                                 {
                                 free_2(GLOBALS->f_name_build_buf); GLOBALS->f_name_build_buf = malloc_2((GLOBALS->f_name_build_buf_len=len)+1);
@@ -1552,11 +1552,11 @@ if((GLOBALS->extload_curr_tree < GLOBALS->extload_max_tree) || (!GLOBALS->extloa
 		case FST_HT_UPSCOPE: 	get_varname2(s, NULL, NULL, -1, &patched_len);
 				GLOBALS->extload_hlen = GLOBALS->fst_scope_name ? strlen(GLOBALS->fst_scope_name) : 0;
 				break;
-	
-		case FST_HT_VAR:	
+
+		case FST_HT_VAR:
 					process_extload_variable2(s);
 				break;
-	
+
 		case FST_HT_TREEEND:
 	                {
 			GLOBALS->extload_curr_tree++;
@@ -1577,7 +1577,7 @@ if((GLOBALS->extload_curr_tree < GLOBALS->extload_max_tree) || (!GLOBALS->extloa
 					}
 				}
 			}
-	
+
 		default:	break;
 		}
 	}
@@ -2465,4 +2465,3 @@ if(GLOBALS->extload_inv_idcodes[txidx_in_trace] > 0)
 }
 
 #endif
-

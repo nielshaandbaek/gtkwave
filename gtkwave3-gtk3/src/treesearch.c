@@ -43,7 +43,7 @@ WAVE_NODEVARDATATYPE_STR
 /* The signal area is based on a tree view which requires a store model.
    This store model contains the list of signals to be displayed.
 */
-enum { NAME_COLUMN, TREE_COLUMN, TYPE_COLUMN, DIR_COLUMN, DTYPE_COLUMN, N_COLUMNS };
+enum { NAME_COLUMN, TREE_COLUMN, TYPE_COLUMN, DIR_COLUMN, DTYPE_COLUMN, SORT_COLUMN, N_COLUMNS };
 
 /* list of autocoalesced (synthesized) filter names that need to be freed at some point) */
 
@@ -233,6 +233,7 @@ fill_sig_store (void)
 							(varxt ? varxt_pnt : vardatatype_strings[vardt]) : vartype_strings[vartype]),
 				    DIR_COLUMN, vardir_strings[vardir],
 				    DTYPE_COLUMN, varxt ? varxt_pnt : vardatatype_strings[vardt],
+            SORT_COLUMN, t->t_order,
 				    -1);
 
 			if(s != t->name)
@@ -255,6 +256,7 @@ fill_sig_store (void)
 							(varxt ? varxt_pnt : vardatatype_strings[vardt]) : vartype_strings[vartype]),
 				    DIR_COLUMN, vardir_strings[vardir],
 				    DTYPE_COLUMN, varxt ? varxt_pnt : vardatatype_strings[vardt],
+            SORT_COLUMN, t->t_order,
 				    -1);
 			}
       		}
@@ -1261,6 +1263,37 @@ return(FALSE);
 
 /**********************************************************************/
 
+gint
+  sort_iter_compare_func (GtkTreeModel *model,
+                          GtkTreeIter  *a,
+                          GtkTreeIter  *b,
+                          gpointer      userdata)
+  {
+    gint sortcol = GPOINTER_TO_INT(userdata);
+    gint ret = 0;
+
+    switch (sortcol)
+    {
+      case SORT_COLUMN:
+      {
+        int order1, order2, compare;
+
+        gtk_tree_model_get(model, a, SORT_COLUMN, &order1, -1);
+        gtk_tree_model_get(model, b, SORT_COLUMN, &order2, -1);
+
+        compare = order1 - order2;
+
+        ret = compare > 0 ? 1 : (compare < 0) ? -1 : 0;
+      }
+      break;
+
+      default:
+        g_return_val_if_reached(0);
+    }
+
+    return ret;
+  }
+
 /*
  * mainline..
  */
@@ -1352,7 +1385,10 @@ do_tooltips:
 
 
     /* Signal names.  */
-    GLOBALS->sig_store_treesearch_gtk2_c_1 = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GLOBALS->sig_store_treesearch_gtk2_c_1 = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+    gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(GLOBALS->sig_store_treesearch_gtk2_c_1), SORT_COLUMN, sort_iter_compare_func,
+                                    GINT_TO_POINTER(SORT_COLUMN), NULL);
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(GLOBALS->sig_store_treesearch_gtk2_c_1), SORT_COLUMN, GTK_SORT_ASCENDING);
     GLOBALS->sst_sig_root_treesearch_gtk2_c_1 = NULL;
     GLOBALS->sig_root_treesearch_gtk2_c_1 = GLOBALS->treeroot;
     fill_sig_store ();
@@ -1598,7 +1634,11 @@ GtkWidget* treeboxframe(char *title, GCallback func)
 
 
     /* Signal names.  */
-    GLOBALS->sig_store_treesearch_gtk2_c_1 = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+    GLOBALS->sig_store_treesearch_gtk2_c_1 = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+    gtk_tree_sortable_set_sort_func(GTK_TREE_SORTABLE(GLOBALS->sig_store_treesearch_gtk2_c_1), SORT_COLUMN, sort_iter_compare_func,
+                                    GINT_TO_POINTER(SORT_COLUMN), NULL);
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(GLOBALS->sig_store_treesearch_gtk2_c_1), SORT_COLUMN, GTK_SORT_ASCENDING);
+
     GLOBALS->sst_sig_root_treesearch_gtk2_c_1 = NULL;
     GLOBALS->sig_root_treesearch_gtk2_c_1 = GLOBALS->treeroot;
     fill_sig_store ();

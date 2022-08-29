@@ -140,7 +140,7 @@ return(1);
 /*
  * decorated module add
  */
-void allocate_and_decorate_module_tree_node(unsigned char ttype, const char *scopename, const char *compname, uint32_t scopename_len, uint32_t compname_len, uint32_t t_stem, uint32_t t_istem)
+void allocate_and_decorate_module_tree_node(unsigned char ttype, const char *scopename, const char *compname, uint32_t scopename_len, uint32_t compname_len, uint32_t t_stem, uint32_t t_istem, int order)
 {
 struct tree *t;
 int mtyp = WAVE_T_WHICH_UNDEFINED_COMPNAME;
@@ -233,6 +233,7 @@ t_allocated:
 		strcpy(t->name, scopename);
 		t->kind = ttype;
 		t->t_which = mtyp;
+    t->t_order = order;
 		t->t_stem = t_stem;
 		t->t_istem = t_istem;
 
@@ -260,6 +261,7 @@ t_allocated:
 		strcpy(t->name, scopename);
 		t->kind = ttype;
 		t->t_which = mtyp;
+    t->t_order = order;
 		t->t_stem = t_stem;
 		t->t_istem = t_istem;
 
@@ -273,6 +275,7 @@ t_allocated:
 	strcpy(t->name, scopename);
 	t->kind = ttype;
 	t->t_which = mtyp;
+  t->t_order = order;
 	t->t_stem = t_stem;
 	t->t_istem = t_istem;
 
@@ -688,6 +691,7 @@ construct:
 			{
 			nt->child = prevt;			/* parent */
 			nt->t_which = which;
+      nt->t_order = GLOBALS->facs[which]->order;
 			nt->next = GLOBALS->terminals_tchain_tree_c_1;
 			GLOBALS->terminals_tchain_tree_c_1 = nt;
 			return;
@@ -712,6 +716,7 @@ construct:
 				{
 				nt->child = t;			/* parent */
 				nt->t_which = which;
+        nt->t_order = GLOBALS->facs[which]->order;
 				nt->next = GLOBALS->terminals_tchain_tree_c_1;
 				GLOBALS->terminals_tchain_tree_c_1 = nt;
 				}
@@ -729,6 +734,7 @@ else
 		memcpy(nt->name, GLOBALS->module_tree_c_1, GLOBALS->module_len_tree_c_1);
 
 		if(!s) nt->t_which=which; else nt->t_which = WAVE_T_WHICH_UNDEFINED_COMPNAME;
+    nt->t_order = -1;
 
 		if((GLOBALS->treeroot)&&(t)) /* scan-build : && t should be unnecessary to avoid null pointer deref, but add defensively */
 			{
@@ -968,7 +974,7 @@ gtk_widget_show(GLOBALS->treeview_main);
 }
 
 
-/* 
+/*
  * SST Exclusion filtering for XXX_maketree2() above
  */
 #define SST_EXCL_MESS "SSTEXCL | "
@@ -1002,7 +1008,7 @@ if(GLOBALS->sst_exclude_filename)
 		perror("Why");
 		return;
 		}
-	
+
 	fprintf(stderr, SST_EXCL_MESS"Processing '%s'.\n", GLOBALS->sst_exclude_filename);
 
 	while(!feof(f))
@@ -1035,7 +1041,7 @@ if(GLOBALS->sst_exclude_filename)
 					else if(!strcmp(p, "[compname]")) { exclmode = SST_EXCL_COMP; }
 					else if(!strcmp(p, "[instname]")) { exclmode = SST_EXCL_INST; }
 					else                              { exclmode = SST_EXCL_NONE; }
-					break;					
+					break;
 
 				default:
 					switch(exclmode)
@@ -1092,7 +1098,7 @@ if(GLOBALS->sst_exclude_filename)
 						default:	break;
 						}
 					break;
-				}			
+				}
 
 			free_2(iline);
 			}

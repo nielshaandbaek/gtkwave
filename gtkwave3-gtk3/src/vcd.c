@@ -1063,6 +1063,7 @@ while((ch=*src))
 static void vcd_parse(void)
 {
 int tok;
+int order;
 unsigned char ttype;
 int disable_autocoalesce = 0;
 
@@ -1192,7 +1193,7 @@ for(;;)
 				strcpy(s->str, GLOBALS->yytext_vcd_c_1);
 				s->mod_tree_parent = GLOBALS->mod_tree_parent;
 
-				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_c_1, NULL, GLOBALS->yylen_vcd_c_1, 0, 0, 0);
+				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_c_1, NULL, GLOBALS->yylen_vcd_c_1, 0, 0, 0, -1);
 
 				if(GLOBALS->slistcurr)
 					{
@@ -1269,6 +1270,7 @@ for(;;)
 			v=(struct vcdsymbol *)calloc_2(1,sizeof(struct vcdsymbol));
 			v->vartype=vtok;
 			v->msi=v->lsi=GLOBALS->vcd_explicit_zero_subscripts; /* indicate [un]subscripted status */
+      v->order = ++order;
 
 			if(vtok==V_PORT)
 				{
@@ -2200,7 +2202,6 @@ while(v)
 	{
 	int msi;
 	int delta;
-
 		{
 		int slen;
 		int substnode;
@@ -2268,6 +2269,7 @@ while(v)
                                         ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 					s->n=v->narray[j];
+          s->order = v->order;
 					if(substnode)
 						{
 						struct Node *n, *n2;
@@ -2328,7 +2330,7 @@ while(v)
 				{
 				sprintf(str+slen-1,"[%d:%d]",v->msi,v->lsi);
 				/* 2d add */
-                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))   
+                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))
                                         {
                                         if((v->vartype!=V_EVENT)&&(v->vartype!=V_PARAMETER))
                                                 {
@@ -2375,6 +2377,8 @@ while(v)
                                 ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 				s->n=v->narray[0];
+        s->order = v->order;
+        fprintf(stderr, "symadd: %s %d\n", s->name, s->order);
 				if(substnode)
 					{
 					struct Node *n, *n2;
@@ -2721,6 +2725,7 @@ if((GLOBALS->min_time==GLOBALS->max_time)&&(GLOBALS->max_time==LLDescriptor(-1))
         vcd_exit(255);
         }
 
+fprintf(stderr, "vcd: vcd_parse\n"); fflush(stderr);
 vcd_build_symbols();
 vcd_sortfacs();
 vcd_cleanup();
@@ -2745,4 +2750,3 @@ return(GLOBALS->max_time);
 }
 
 /*******************************************************************************/
-

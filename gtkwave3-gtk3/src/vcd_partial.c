@@ -1013,9 +1013,10 @@ while((ch=*src))
 static void vcd_parse(void)
 {
 int tok;
+int order = 0;
 unsigned char ttype;
 int disable_autocoalesce = 0;
-
+fprintf(stderr, "vcd_partial: vcd_parse\n"); fflush(stderr);
 for(;;)
 	{
 	switch(get_token())
@@ -1141,7 +1142,7 @@ for(;;)
 				strcpy(s->str, GLOBALS->yytext_vcd_partial_c_2);
 				s->mod_tree_parent = GLOBALS->mod_tree_parent;
 
-				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_partial_c_2, NULL, GLOBALS->yylen_vcd_partial_c_2, 0, 0, 0);
+				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_partial_c_2, NULL, GLOBALS->yylen_vcd_partial_c_2, 0, 0, 0, ++order);
 
 				if(GLOBALS->slistcurr)
 					{
@@ -2039,6 +2040,7 @@ int ss_len, longest = 0;
 #endif
 
 v=GLOBALS->vcdsymroot_vcd_partial_c_2;
+fprintf(stderr, "vcd_build_symbols\n");
 while(v)
 	{
 	int msi;
@@ -2111,6 +2113,7 @@ while(v)
                                         ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 					s->n=v->narray[j];
+          s->order = v->order;
 					if(substnode)
 						{
 						struct Node *n, *n2;
@@ -2171,7 +2174,7 @@ while(v)
 				{
 				sprintf(str+slen-1,"[%d:%d]",v->msi,v->lsi);
 				/* 2d add */
-                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))   
+                                if((v->msi>v->lsi)&&((v->msi-v->lsi+1)!=v->size))
                                         {
                                         if((v->vartype!=V_EVENT)&&(v->vartype!=V_PARAMETER))
                                                 {
@@ -2218,6 +2221,7 @@ while(v)
                                 ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 				s->n=v->narray[0];
+        s->order = v->order;
 				if(substnode)
 					{
 					struct Node *n, *n2;
@@ -2413,6 +2417,7 @@ if((!GLOBALS->sorted_vcd_partial_c_2)&&(!GLOBALS->indexed_vcd_partial_c_2))
 	}
 
 add_tail_histents();
+fprintf(stderr, "vcd_build_symbols\n");
 vcd_build_symbols();
 vcd_sortfacs();
 vcd_cleanup();

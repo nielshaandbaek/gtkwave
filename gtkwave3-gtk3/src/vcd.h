@@ -110,6 +110,7 @@ char *value;
 struct Node **narray;
 hptr *tr_array;   /* points to synthesized trailers (which can move) */
 hptr *app_array;   /* points to hptr to append to (which can move) */
+int order;
 
 unsigned int nid;
 int msi, lsi;
@@ -139,4 +140,3 @@ void import_vcd_trace(nptr np);
 int vcd_keyword_code(const char *s, unsigned int len);
 
 #endif
-

@@ -57,6 +57,7 @@ struct symbol *sym_next;  /* for hash chain, judy uses sym_judy in globals */
 struct symbol *vec_root, *vec_chain;
 char *name;
 struct Node *n;
+int order;
 
 #ifndef _WAVE_HAVE_JUDY
 char s_selected;		/* for the clist object */
@@ -125,4 +126,3 @@ char set_s_selected(struct symbol *s, char value);
 void destroy_s_selected(void);
 
 #endif
-

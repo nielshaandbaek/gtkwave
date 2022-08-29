@@ -1406,8 +1406,10 @@ while((ch=*src))
 static void vcd_parse(void)
 {
 int tok;
+int order = 0;
 unsigned char ttype;
 int disable_autocoalesce = 0;
+fprintf(stderr, "vcd_recorder: vcd_parse\n"); fflush(stderr);
 
 for(;;)
 	{
@@ -1534,7 +1536,7 @@ for(;;)
 				strcpy(s->str, GLOBALS->yytext_vcd_recoder_c_3);
 				s->mod_tree_parent = GLOBALS->mod_tree_parent;
 
-				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_recoder_c_3, NULL, GLOBALS->yylen_vcd_recoder_c_3, 0, 0, 0);
+				allocate_and_decorate_module_tree_node(ttype, GLOBALS->yytext_vcd_recoder_c_3, NULL, GLOBALS->yylen_vcd_recoder_c_3, 0, 0, 0, -1);
 
 				if(GLOBALS->slistcurr)
 					{
@@ -1935,6 +1937,7 @@ for(;;)
 			v->narray[0]=(struct Node *)calloc_2(1,sizeof(struct Node));
 			v->narray[0]->head.time=-1;
 			v->narray[0]->head.v.h_val=AN_X;
+      v->order = ++order;
 
 			if(!GLOBALS->vcdsymroot_vcd_recoder_c_3)
 				{
@@ -2503,6 +2506,8 @@ while(v)
 					ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 					s->n=v->narray[j];
+          s->order = v->order;
+
 					if(substnode)
 						{
 						struct Node *n, *n2;
@@ -2571,7 +2576,7 @@ while(v)
 						v->msi = v->size-1; v->lsi = 0;
 						}
 					}
-				else	
+				else
 				if((v->lsi>=v->msi)&&((v->lsi-v->msi+1)!=v->size))
 					{
 					if((v->vartype!=V_EVENT)&&(v->vartype!=V_PARAMETER))
@@ -2611,6 +2616,7 @@ while(v)
                                 ss_len = strlen(str); if(ss_len >= longest) { longest = ss_len + 1; }
 #endif
 				s->n=v->narray[0];
+        s->order = v->order;
 				if(substnode)
 					{
 					struct Node *n, *n2;
@@ -3400,4 +3406,3 @@ if(GLOBALS->vlist_prepack)
 	}
 np->mv.mvlfac_vlist = NULL;
 }
-

@@ -193,7 +193,7 @@ while((h = fstReaderIterateHier(xc)))
 
 			allocate_and_decorate_module_tree_node(ttype, h->u.scope.name, h->u.scope.component, h->u.scope.name_length, h->u.scope.component_length,
 				GLOBALS->stem_valid ? GLOBALS->stem_struct_base_siz : 0,
-				GLOBALS->istem_valid ? GLOBALS->istem_struct_base_siz : 0);
+				GLOBALS->istem_valid ? GLOBALS->istem_struct_base_siz : 0, -1);
 			GLOBALS->stem_valid = GLOBALS->istem_valid = 0;
                         break;
                 case FST_HT_UPSCOPE:
@@ -452,9 +452,9 @@ while((h = fstReaderIterateHier(xc)))
 					if(h->u.attr.name)
 						{
 						/* format is concatenations of [m b xs xe valstring] */
-						if(GLOBALS->fst_synclock_str) 
+						if(GLOBALS->fst_synclock_str)
 							{
-							free_2(GLOBALS->fst_synclock_str);			
+							free_2(GLOBALS->fst_synclock_str);
 							}
 						GLOBALS->fst_synclock_str = strdup_2(h->u.attr.name);
 						}
@@ -1989,4 +1989,3 @@ for(txidxi=0;txidxi<GLOBALS->fst_maxhandle;txidxi++)
 		}
 	}
 }
-
